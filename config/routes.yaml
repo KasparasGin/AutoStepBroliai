@@ -1,0 +1,5 @@
+#index:
+#    path: /home/page
+#    controller: App\Controller\HomePageController::home_page
+app_logout:
+  path: /logout

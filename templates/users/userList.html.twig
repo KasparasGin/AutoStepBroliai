@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+    <table >
+        <thead>
+
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>User</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+
+        </thead>
+        <tbody>
+
+
+        {% for user in users %}
+            <tr>
+                <td></td>
+                <th scope="row">{{ user.id }}</th>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                {% for role in user.roles %}
+                    <td>
+                        {{ role }}
+                    </td>
+                {% endfor %}
+                <td>
+                    <a href="{{ path('editUser', {id: user.id}) }}">
+                        <button type="button" class="btn btn-primary">Redaguoti</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+{% endblock %}

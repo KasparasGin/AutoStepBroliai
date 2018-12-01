@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+
+    <title> AutoStepBroliai</title>
+
+    <ul>
+        <li><a href="/">Pagrindinis puslapis</a></li>
+
+
+    {% if app.user %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{ path('allUsers') }}">Vartotoju sarasas</a></li>
+        {% endif %}
+        <li><a href="/logout">Atsijungti</a></li>
+
+    {% else %}
+        <li><a href="/login">Prisijungimas</a></li>
+    {% endif %}
+
+
+    </ul>
+</head>
+
+<body>
+
+{#<div class="container">#}
+
+    {#{% include('flash-messages.html.twig') %}#}
+
+
+{#</div>#}
+
+{% block body %}
+
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

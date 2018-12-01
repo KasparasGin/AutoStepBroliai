@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Pagrindinis
+{% endblock %}
+
+{% block body %}
+    <p>Cia yra pagrindinis puslapis.  {% if app.user %} Prisijunges vartotojas: {{ app.user.username }} {% endif %}</p>
+{% endblock %}
