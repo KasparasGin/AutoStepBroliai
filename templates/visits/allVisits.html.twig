@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+
+    <table>
+
+
+        <tr>
+            <td>#</td>
+            <td>Apsilankymo data</td>
+            <td>Apsilankymo laikas</td>
+            <td>Registruotas automobilis</td>
+            {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+                <td>Vartotojas</td>
+            {% endif %}
+            <td>Busena</td>
+        </tr>
+
+
+        {% for visit in visits %}
+            <tr>
+            <th>{{ loop.index }}</th>
+            <td>{{ visit.date|date('Y-m-d') }}</td>
+            <td>{{ visit.time|date('H:i') }}</td>
+            <td>{{ visit.car.registrationPlate }}</td>
+                {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+                    <td>
+                        {{ visit.user.email }}
+                    </td>
+                {% endif %}
+            <td>
+                {% if (visit.state == 1) %}
+                    Vykdomas
+                {% endif %}
+
+                {% if (visit.state == 0) %}
+                    Atšauktas
+                {% endif %}
+
+                {% if (visit.state == 2) %}
+                    Baigtas
+                {% endif %}
+            </td>
+            {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+                <td>
+                    <a href="{{ path('editVisit', {id: visit.id}) }}">
+                        <button type="button">Redaguoti</button>
+                    </a>
+                </td>
+
+            {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="{{ path('registerVisit') }}">Registruotis apziurai</a></p>
+{% endblock %}
