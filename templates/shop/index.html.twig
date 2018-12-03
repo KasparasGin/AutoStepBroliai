@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+    <li><a href="{{ path('list') }}">Prekių sąrašas</a></li>
+    <li><a href="{{ path('order') }}">Prekių užsakymas</a></li>
+    <li><a href="{{ path('payment') }}">Prekių apmokėjimas</a></li>
+
+{% endblock %}
