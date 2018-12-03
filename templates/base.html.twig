@@ -4,26 +4,19 @@
     <meta charset="UTF-8" />
 
     <title> AutoStepBroliai</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <ul>
-        <li><a href="/">Pagrindinis puslapis</a></li>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    {% if app.user %}
-        {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('allUsers') }}">Vartotoju sarasas</a></li>
-        {% endif %}
-        <li><a href="/logout">Atsijungti</a></li>
-        <li><a href="{{ path('allVisits') }}">Apsilankymai servise</a></li>
-        <li><a href="{{ path('shop') }}">Parduotuvė</a></li>
-        <li><a href="{{ path('suppliers') }}">Tiekėjų valdymas</a></li>
+    <!-- Custom CSS File -->
+    <style src="../web/css/style.css"></style>
 
-    {% else %}
-        <li><a href="/login">Prisijungimas</a></li>
-    {% endif %}
-
-
-    </ul>
 </head>
 
 <body>
@@ -34,6 +27,24 @@
 
 
 {#</div>#}
+<ul>
+    <li><a href="/">Pagrindinis puslapis</a></li>
+
+    {% if app.user %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{ path('allUsers') }}">Vartotoju sarasas</a></li>
+        {% endif %}
+        <li class="navi"><a href="/logout">Atsijungti</a></li>
+        <li><a href="{{ path('allVisits') }}">Apsilankymai servise</a></li>
+        <li><a href="{{ path('shop') }}">Parduotuvė</a></li>
+        <li><a href="{{ path('suppliers') }}">Tiekėjų valdymas</a></li>
+
+    {% else %}
+        <li><a href="/login">Prisijungimas</a></li>
+    {% endif %}
+
+
+</ul>
 
 {% block body %}
 
