@@ -2,7 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Supplier;
+use App\Entity\Visit;
+use App\Form\SupplierAddType;
+use App\Form\VisitEditType;
+use App\Form\VisitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SuppliersController extends AbstractController
@@ -20,10 +26,27 @@ class SuppliersController extends AbstractController
     /**
      * @Route("/suppliers/addSupplier", name="addSupplier")
      */
-    public function addSupplier()
+    public function addSupplier(Request $request)
     {
+        $supplier = new Supplier();
+
+        $form = $this->createForm(SupplierAddType::class);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $supplier->setCompanyCode($form['company_code']->getData());
+            $supplier->setName($form['name']->getData());
+            $supplier->setAddress($form['address']->getData());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($supplier);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('suppliers');
+        }
         return $this->render('suppliers/addSupplier.html.twig', [
-            'controller_name' => 'SuppliersController',
+            'form' => $form->createView(),
         ]);
     }
 
