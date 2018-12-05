@@ -21,19 +21,20 @@ class SuppliersController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $user = $this->getUser();
-        if(in_array('ROLE_ADMIN', $user->getRoles()) ||
+        $suppliers = $em->getRepository('App:Supplier')->findAll();
+        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
             in_array('ROLE_MECHANIC', $user->getRoles()))
             $suppliers = $em->getRepository('App:Supplier')->findAll();
 
-        /*else {
+        else {
             $suppliers = $em->getRepository('App:Supplier')
                 ->findBy(
                     ['user' => $user->getId()]
                 );
         }*/
         return $this->render('suppliers/index.html.twig', [
-            'controller_name' => 'SuppliersController',
-            ]);
+            'suppliers' => $suppliers,
+        ]);
     }
 
     /**
