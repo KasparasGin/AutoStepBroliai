@@ -43,4 +43,31 @@ class ShopController extends AbstractController
             'controller_name' => 'ShopController',
         ]);
     }
+    /**
+     * @Route("/shop/orderedShop", name="ordered")
+     */
+    public function showOrders()
+    {
+        return $this->render('shop/orderedShop.html.twig', [
+            'controller_name' => 'ShopController',
+        ]);
+    }
+    /**
+     * @Route("/shop/ordereditShop", name="orderedit")
+     */
+    public function showOrderEdit()
+    {
+        return $this->render('shop/ordereditShop.html.twig', [
+            'controller_name' => 'ShopController',
+        ]);
+    }
+    /**
+     * @Route("/shop/orderdeleteShop", name="orderdelete")
+     */
+    public function showOrderDelete()
+    {
+        return $this->render('shop/orderdeleteShop.html.twig', [
+            'controller_name' => 'ShopController',
+        ]);
+    }
 }
