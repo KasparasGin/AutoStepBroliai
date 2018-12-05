@@ -1,13 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello {{ controller_name }}!{% endblock %}
-
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block body %}
 
-    {{ form_start(form) }}
 
 
-    {{ form_end(form) }}
-    <button type="submit">Pridėti</button>
+    <div class="container">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-success">Pridėti užsakymą</button>
+        &emsp;&emsp;&emsp;&emsp;&emsp;
+        <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+        {{ form_end(form) }}
+    </div>
+
 
 {% endblock %}
