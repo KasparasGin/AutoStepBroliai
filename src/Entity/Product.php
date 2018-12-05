@@ -19,7 +19,7 @@ class Product
     private $id;
 
     /**
-     * @ORM\Column(type="double")
+     * @ORM\Column(type="float")
      */
     private $price;
 
