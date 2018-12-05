@@ -88,13 +88,20 @@ class SuppliersController extends AbstractController
     }
 
     /**
-     * @Route("/suppliers/deleteSupplier", name="deleteSupplier")
+     * @Route("/suppliers/deleteSupplier/{id}", name="deleteSupplier")
      */
-    public function deleteSupplier()
+    public function deleteSupplier(Request $request, Supplier $supplier)
     {
-        return $this->render('suppliers/deleteSupplier.html.twig', [
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        if(in_array('ROLE_ADMIN', $user->getRoles())){
+            $em->remove($supplier);
+            $em->flush();
+            return $this->redirectToRoute('suppliers');
+        }
+        /*return $this->render('suppliers/deleteSupplier.html.twig', [
             'controller_name' => 'SuppliersController',
-        ]);
+        ]);*/
     }
 
     /**
