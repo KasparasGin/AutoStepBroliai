@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Supplier;
-use App\Entity\Visit;
+use App\Entity\Waybill;
 use App\Form\SupplierAddType;
 use App\Form\SupplierEditType;
 use App\Form\VisitEditType;
@@ -117,10 +117,13 @@ class SuppliersController extends AbstractController
     /**
      * @Route("/suppliers/waybills", name="allwaybills")
      */
-    public function waybills()
+    public function waybills(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $waybills = $em->getRepository('App:Waybill')->findAll();
         return $this->render('suppliers/waybills.html.twig', [
-            'controller_name' => 'SuppliersController',
+            'waybills' => $waybills,
         ]);
     }
 
