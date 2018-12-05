@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CARRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
 class Product
 {
@@ -39,7 +39,7 @@ class Product
         return $this->id;
     }
 
-    public function getPrice(): ?double
+    public function getPrice(): ?float
     {
         return $this->price;
     }

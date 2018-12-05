@@ -11,6 +11,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShopController extends AbstractController
 {
     /**
+     * @Route("/shop/listShop", name="products")
+     */
+    public function showShopMenu(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getUser();
+        $products = $em->getRepository('App:Product')->findAll();
+        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
+            in_array('ROLE_MECHANIC', $user->getRoles()))
+            $suppliers = $em->getRepository('App:Supplier')->findAll();
+
+        else {
+            $suppliers = $em->getRepository('App:Supplier')
+                ->findBy(
+                    ['user' => $user->getId()]
+                );
+        }*/
+        return $this->render('shop/listShop.html.twig', [
+            'products' => $products,
+        ]);
+    }
+    /**
      * @Route("/shop/index", name="shop")
      */
     public function showShop()

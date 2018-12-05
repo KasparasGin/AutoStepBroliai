@@ -4,6 +4,39 @@
 
 {% block body %}
 
-    <p>Cia yra prekių sąrašo puslapis.  {% if app.user %} Prisijunges vartotojas: {{ app.user.username }} {% endif %}</p>
 
+    <li><a href="{{ path('addSupplier') }}">Pridėti užsakymą</a></li>
+
+
+    <table class="table table-striped table-hover">
+
+        <tr>
+            <td>Nr.</td>
+            <td>Prekės kodas</td>
+            <td>Pavadinimas</td>
+            <td>Kaina</td>
+
+        </tr>
+
+        {% for product in products %}
+            <tr>
+                <th>{{ loop.index }}</th>
+                <td>{{ product.code }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+
+                {% if (is_granted('ROLE_ADMIN')) %}
+                    <td>
+                        <a href="{{ path('orderedit', {id: product.id}) }}">
+                            <button type="button" class="btn btn-primary">Redaguoti</button>
+                        </a>
+                        <a href="{{ path('orderdelete', {id: product.id}) }}">
+                            <button type="button" class="btn btn-danger">Šalinti</button>
+                        </a>
+                    </td>
+
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
