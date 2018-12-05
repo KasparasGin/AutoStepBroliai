@@ -27,10 +27,10 @@
 
                 {% if (is_granted('ROLE_ADMIN')) %}
                     <td>
-                        <a href="{{ path('editVisit', {id: supplier.id}) }}">
+                        <a href="{{ path('editSupplier', {id: supplier.id}) }}">
                             <button type="button" class="btn btn-primary">Redaguoti</button>
                         </a>
-                        <a href="{{ path('editVisit', {id: supplier.id}) }}">
+                        <a href="{{ path('deleteSupplier', {id: supplier.id}) }}">
                             <button type="button" class="btn btn-danger">Šalinti</button>
                         </a>
                     </td>

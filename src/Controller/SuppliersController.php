@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Supplier;
 use App\Entity\Visit;
 use App\Form\SupplierAddType;
+use App\Form\SupplierEditType;
 use App\Form\VisitEditType;
 use App\Form\VisitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,12 +66,24 @@ class SuppliersController extends AbstractController
     }
 
     /**
-     * @Route("/suppliers/editSupplier", name="editSupplier")
+     * @Route("/suppliers/editSupplier/{id}", name="editSupplier")
      */
-    public function editSupplier()
+    public function editSupplier(Request $request, Supplier $supplier)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(SupplierEditType::class, $supplier);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($supplier);
+            $em->flush();
+
+            return $this->redirectToRoute('suppliers');
+        }
         return $this->render('suppliers/editSupplier.html.twig', [
-            'controller_name' => 'SuppliersController',
+            'supplier' => $supplier,
+            'form' => $form->createView()
         ]);
     }
 
