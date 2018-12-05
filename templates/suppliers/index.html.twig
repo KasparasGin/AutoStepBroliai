@@ -3,10 +3,18 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-
-    <li><a href="{{ path('addSupplier') }}">Pridėti tiekėją</a></li>
-    <li><a href="{{ path('paymentsForSuppliers') }}">Apmokėjimai tiėkėjams</a></li>
-
+    <br>
+<ul class="list-inline">
+    {% if is_granted('ROLE_ADMIN')%}
+        <li><a href="{{ path('addSupplier') }}">Pridėti tiekėją</a></li>
+        <li><a href="{{ path('paymentsForSuppliers') }}">Apmokėjimai tiėkėjams</a></li>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
+        <li><a href="{{ path('allwaybills') }}">Važtaraščiai</a></li>
+        <li><a href="{{ path('allRequiredParts') }}">Reikiamų detalių sąrašas</a></li>
+    {% endif %}
+</ul>
+    <br>
     <table class="table table-striped table-hover table-bordered">
 
         <tr>

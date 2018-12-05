@@ -113,4 +113,24 @@ class SuppliersController extends AbstractController
             'controller_name' => 'SuppliersController',
         ]);
     }
+
+    /**
+     * @Route("/suppliers/waybills", name="allwaybills")
+     */
+    public function waybills()
+    {
+        return $this->render('suppliers/waybills.html.twig', [
+            'controller_name' => 'SuppliersController',
+        ]);
+    }
+
+    /**
+     * @Route("/suppliers/requiredParts", name="allRequiredParts")
+     */
+    public function requiredParts()
+    {
+        return $this->render('suppliers/requiredParts.html.twig', [
+            'controller_name' => 'SuppliersController',
+        ]);
+    }
 }
