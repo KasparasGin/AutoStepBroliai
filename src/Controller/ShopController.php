@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
+use App\Form\ProductAdd;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ShopController extends AbstractController
@@ -68,6 +71,32 @@ class ShopController extends AbstractController
     {
         return $this->render('shop/orderdeleteShop.html.twig', [
             'controller_name' => 'ShopController',
+        ]);
+    }
+    /**
+     * @Route("/shop/orderShop", name="order")
+     */
+    public function orderShop(Request $request)
+    {
+        $product = new Product();
+
+        $form = $this->createForm(ProductAdd::class);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $product->setCode($form['code']->getData());
+            $product->setName($form['name']->getData());
+            $product->setPrice($form['price']->getData());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('shop');
+        }
+        return $this->render('shop/orderShop.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

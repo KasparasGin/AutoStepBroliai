@@ -4,6 +4,10 @@
 
 {% block body %}
 
-    <p>Cia yra prekių užsakymo puslapis.  {% if app.user %} Prisijunges vartotojas: {{ app.user.username }} {% endif %}</p>
+    {{ form_start(form) }}
+
+
+    {{ form_end(form) }}
+    <button type="submit">Pridėti</button>
 
 {% endblock %}
