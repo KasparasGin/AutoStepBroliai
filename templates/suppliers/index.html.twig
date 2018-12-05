@@ -9,4 +9,35 @@
     <li><a href="{{ path('deleteSupplier') }}">Šalinti tiekėją</a></li>
     <li><a href="{{ path('paymentsForSuppliers') }}">Apmokėjimai tiėkėjams</a></li>
 
+    <table>
+
+
+        <tr>
+            <td>Nr.</td>
+            <td>Įmonės kodas</td>
+            <td>Pavadinimas</td>
+            <td>Adresas</td>
+            {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+            {% endif %}
+        </tr>
+
+
+        {% for supplier in suppliers %}
+            <tr>
+                <th>{{ loop.index }}</th>
+                <td>{{ supplier.companycode }}</td>
+                <td>{{ supplier.name }}</td>
+                <td>{{ supplier.address }}</td>
+
+                {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+                    <td>
+                        <a href="{{ path('editVisit', {id: supplier.id}) }}">
+                            <button type="button">Redaguoti</button>
+                        </a>
+                    </td>
+
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
