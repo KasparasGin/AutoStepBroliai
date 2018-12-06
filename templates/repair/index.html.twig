@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+    <li><a href="{{ path('createNote') }}">Palikti užrašą</a></li>
+    <li><a href="{{ path('reserveTool') }}">Rezervuoti įrankį</a></li>
+    <li><a href="{{ path('addRepairAction') }}">Pridėti remonto veiksmą</a></li>
+    <li><a href="{{ path('orderPart') }}">Užsakyti detalę</a></li>
+    <li><a href="{{ path('describePart') }}">Aprašyti sugedusią detalę</a></li>
+    <li><a href="{{ path('repairManuals') }}">Remonto instrukcijos</a></li>
+
+{% endblock %}

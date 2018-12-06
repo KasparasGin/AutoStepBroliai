@@ -16,7 +16,7 @@ class VisitsController extends AbstractController
     /**
      * @Route("/visits/register", name="registerVisit")
      */
-    public function addVisit(Request $request)
+        public function addVisit(Request $request)
     {
 
         $car = new Car();
