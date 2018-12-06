@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\DateType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NoteRepository")
  */
-class Note
+class RepairAction
 {
     /**
      * @ORM\Id()
@@ -24,11 +25,15 @@ class Note
     private $comment;
 
     /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Work")
      * @ORM\JoinColumn(nullable=true)
      */
     private $work;
-
 
     public function getId(): ?int
     {
@@ -46,26 +51,14 @@ class Note
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->description;
+        return $this->date;
     }
 
-    public function setDescription(?string $description): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getWork(): ?string
-    {
-        return $this->work;
-    }
-
-    public function setWork(?Work $description): self
-    {
-        $this->work = $description;
+        $this->date = $date;
 
         return $this;
     }

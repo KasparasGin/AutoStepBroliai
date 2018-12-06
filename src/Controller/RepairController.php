@@ -3,13 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Note;
+use App\Entity\RepairAction;
 use App\Entity\Visit;
+use App\Form\NoteType;
+use App\Form\RepairActionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RepairController extends AbstractController
 {
+    /**
+     * @Route("/result/success", name="success")
+     */
+    public function showSuccess()
+    {
+        return $this->render('result/success.html.twig', [
+            'controller_name' => 'RepairController',
+        ]);
+    }
+
     /**
      * @Route("/repair/index", name="repair")
      */
@@ -26,7 +39,7 @@ class RepairController extends AbstractController
     {
         $note = new Note();
 
-        $form = $this->createForm(Note::class);
+        $form = $this->createForm(NoteType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -36,11 +49,11 @@ class RepairController extends AbstractController
             $entityManager->persist($note);
             $entityManager->flush();
 
-            return $this->redirectToRoute('allVisits');
+            return $this->redirectToRoute('success');
         }
 
         return $this->render('repair/createNote.html.twig', [
-            'controller_name' => 'RepairController',
+            'form' => $form->createView(),
         ]);
     }
     /**
@@ -55,10 +68,26 @@ class RepairController extends AbstractController
     /**
      * @Route("/repair/addRepairAction", name="addRepairAction")
      */
-    public function addRepairAction()
+    public function addRepairAction(Request $request)
     {
+        $action = new RepairAction();
+
+        $form = $this->createForm(RepairActionType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $action->setComment($form['comment']->getData());
+            $action->setDate($form['date']->getData());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($action);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('success');
+        }
+
         return $this->render('repair/addRepairAction.html.twig', [
-            'controller_name' => 'RepairController',
+            'form' => $form->createView(),
         ]);
     }
     /**
