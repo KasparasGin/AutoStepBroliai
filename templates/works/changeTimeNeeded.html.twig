@@ -4,6 +4,11 @@
 
 {% block body %}
 
-Keisti laiko įverčius
-
+<h2>Kiek laiko liko iki darbo atlikimo?</h2>
+<div class="container">
+    {{ form_start(form)}}
+         {{ form_widget(form) }}
+            <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+    {{ form_widget(form) }}
+</div>
 {% endblock %}

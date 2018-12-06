@@ -5,9 +5,12 @@
 {% block body %}
 <h2>Redaguoti tiekėją</h2>
 <br>
- {{ form_start(form)}}
- <br>
- {{ form_end(form) }}
+ <div class="container">
+    {{ form_start(form)}}
+         {{ form_widget(form) }}
+            <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+    {{ form_widget(form) }}
+</div>
        
 
 {% endblock %}

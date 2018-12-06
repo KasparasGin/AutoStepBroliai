@@ -7,7 +7,8 @@
  <p>Pridėkite darbą:  {% if app.user %} Prisijunges vartotojas: {{ app.user.username }} {% endif %}</p>
     
     {{ form_start(form) }}
-
+ {{ form_widget(form) }}
+ <br>
 <button type="submit">Pridėti</button>
      {{ form_end(form) }}
     

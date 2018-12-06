@@ -7,19 +7,19 @@
 <br>
 <div class="btn-group">
 {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
-    <li><a href="{{ path('addWork') }}">Pridėti darbą</a></li>
-    <li><a href="{{ path('changeTimeNeeded') }}">Keisti laiko įvertį</a></li>
-    <li><a href="{{ path('confirmCompletion') }}">Patvirtinti darbo atlikimą</a></li>
+    <li><a href="{{ path('addWork') }}" class="btn btn-info">Pridėti darbą</a></li>
     <li><a href="{{ path('timeTable') }}">Tvarkaraštis</a></li>
 {% endif %}
 </div>
-<table>
+<table class="table table-hover table-sm">
 
     <tr>
+        <td>#</td>
         <td>vizitas</td>
         <td>Darbo tipas</td>
         <td>Aprašymas</td>
         <td>Skirtas laikas, (val.)</td>
+        <td>Progresas</td>
         <td></td>
     </tr>
  {% for work in works %}
@@ -29,17 +29,26 @@
             <td>{{ work.type}}</td>
             <td>{{ work.description}}</td>
             <td>{{ work.timeNeeded}}</td>
+            <td>{% if (work.completion == 1) %}
+                    Baigtas
+                {% endif %}
+            </td>
             {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
                 <td>
                     <a href="{{ path('editWork', {id: work.id}) }}">
-                        <button type="button">Redaguoti</button>
+                        <button type="button" class="btn btn-secondary">Redaguoti</button>
+                    </a>
+                    <a href="{{ path('changeTimeNeeded', {id: work.id}) }}">
+                        <button type="button" class="btn btn-secondary">Keisti laiką</button>
                     </a>
                     <a href="{{ path('deleteWork', {id: work.id}) }}">
-                        <button type="button">Šalinti</button>
+                        <button type="button" class="btn btn-danger">Šalinti</button>
+                    </a>
+                    {% endif %}
+                    <a href="{{ path('confirmCompletion', {id: work.id}) }}">
+                        <button type="button" class="btn btn-success" onclick='return confirm("Patvirtinkite")'>Darbas atliktas</button>
                     </a>
                 </td>
-
-            {% endif %}
             </tr>
         {% endfor %}
     </table>

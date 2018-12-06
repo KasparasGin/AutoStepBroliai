@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Work;
 use App\Form\WorkAddType;
 use App\Form\EditWorkType;
+use App\Form\WorkCompletionType;
+use App\Form\ChangeTimeNeededType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,22 +101,46 @@ class WorkController extends AbstractController
         
     }
     /**
-     * @Route("/work/changeTimeNeeded", name="changeTimeNeeded")
+     * @Route("/works/changeTimeNeeded\{id}", name="changeTimeNeeded")
      */
-    public function changeTimeNeeded(Request $request)
+    public function changeTimeNeeded(Request $request, Work $work)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(ChangeTimeNeededType::class, $work);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $work->setTimeNeeded($form['timeNeeded']->getData());
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($work);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('works');
+        }
         return $this->render('works/changeTimeNeeded.html.twig', [
-            'controller_name' => 'WorkController',
+            'form' => $form->createView(),
         ]);
     }
      /**
-     * @Route("/work/confirmCompletion", name="confirmCompletion")
+     * @Route("/works/confirmCompletion/{id}", name="confirmCompletion")
      */
-    public function confirmCompletion(Request $request)
+    public function confirmCompletion(Request $request, Work $work)
     {
-        return $this->render('works/confirmCompletion.html.twig', [
-            'controller_name' => 'WorkController',
-        ]);
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(WorkCompletionType::class, $work);
+        $form->handleRequest($request);
+
+        $work->setCompletion(1);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($work);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('works');
+       
     }
      /**
      * @Route("/work/timeTable", name="timeTable")
