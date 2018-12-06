@@ -4,6 +4,12 @@
 
 {% block body %}
 
-Pridėti darbą
+ <p>Pridėkite darbą:  {% if app.user %} Prisijunges vartotojas: {{ app.user.username }} {% endif %}</p>
+    
+    {{ form_start(form) }}
+
+<button type="submit">Pridėti</button>
+     {{ form_end(form) }}
+    
 
 {% endblock %}

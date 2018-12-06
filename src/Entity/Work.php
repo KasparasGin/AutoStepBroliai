@@ -36,6 +36,11 @@ class Work
      */
     private $completion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Visit", inversedBy="works")
+     */
+    private $visit;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class Work
     public function setCompletion(bool $completion): self
     {
         $this->completion = $completion;
+
+        return $this;
+    }
+
+    public function getVisit(): ?Visit
+    {
+        return $this->visit;
+    }
+
+    public function setVisit(?Visit $visit): self
+    {
+        $this->visit = $visit;
 
         return $this;
     }

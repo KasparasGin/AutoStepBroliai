@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +49,16 @@ class Visit
      * @ORM\Column(type="smallint")
      */
     private $state;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Work", mappedBy="visit")
+     */
+    private $works;
+
+    public function __construct()
+    {
+        $this->works = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +133,37 @@ class Visit
     public function setState(int $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Work[]
+     */
+    public function getWorks(): Collection
+    {
+        return $this->works;
+    }
+
+    public function addWork(Work $work): self
+    {
+        if (!$this->works->contains($work)) {
+            $this->works[] = $work;
+            $work->setVisit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWork(Work $work): self
+    {
+        if ($this->works->contains($work)) {
+            $this->works->removeElement($work);
+            // set the owning side to null (unless already changed)
+            if ($work->getVisit() === $this) {
+                $work->setVisit(null);
+            }
+        }
 
         return $this;
     }
