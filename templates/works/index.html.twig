@@ -8,9 +8,9 @@
 <div class="btn-group">
 {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
     <li><a href="{{ path('addWork') }}" class="btn btn-info">Pridėti darbą</a></li>
-    <li><a href="{{ path('timeTable') }}">Tvarkaraštis</a></li>
 {% endif %}
 </div>
+<br><br><br>
 <table class="table table-hover table-sm">
 
     <tr>
@@ -20,6 +20,7 @@
         <td>Aprašymas</td>
         <td>Skirtas laikas, (val.)</td>
         <td>Progresas</td>
+        <td></td>
         <td></td>
     </tr>
  {% for work in works %}
@@ -33,8 +34,8 @@
                     Baigtas
                 {% endif %}
             </td>
+            <td>
             {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
-                <td>
                     <a href="{{ path('editWork', {id: work.id}) }}">
                         <button type="button" class="btn btn-secondary">Redaguoti</button>
                     </a>
@@ -45,6 +46,7 @@
                         <button type="button" class="btn btn-danger">Šalinti</button>
                     </a>
                     {% endif %}
+                    
                     <a href="{{ path('confirmCompletion', {id: work.id}) }}">
                         <button type="button" class="btn btn-success" onclick='return confirm("Patvirtinkite")'>Darbas atliktas</button>
                     </a>
@@ -52,5 +54,7 @@
             </tr>
         {% endfor %}
     </table>
-
+     {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+    <li><a href="{{ path('timeTable') }}" class="btn btn-info btn-lg btn-block">Tvarkaraštis</a></li>
+    {% endif %}
 {% endblock %}
