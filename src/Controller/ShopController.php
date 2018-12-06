@@ -79,16 +79,6 @@ class ShopController extends AbstractController
             'controller_name' => 'ShopController',
         ]);
     }
-
-    /**
-     * @Route("/shop/orderdeleteShop", name="orderdelete")
-     */
-    public function showOrderDelete()
-    {
-        return $this->render('shop/orderdeleteShop.html.twig', [
-            'controller_name' => 'ShopController',
-        ]);
-    }
     /**
      * @Route("/shop/orderShop", name="order")
      */
@@ -116,9 +106,9 @@ class ShopController extends AbstractController
         ]);
     }
     /**
-     * @Route("/shop/ordereditShop/{id}", name="editOrder")
+     * @Route("/shop/ordereditShop/{id}", name="editProduct")
      */
-    public function editOrder(Request $request, Product $product)
+    public function editProduct(Request $request, Product $product)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -135,5 +125,19 @@ class ShopController extends AbstractController
             'product' => $product,
             'form' => $form->createView()
         ]);
+    }
+    /**
+     * @Route("/shop/orderdelete/{id}", name="deleteProduct")
+     */
+    public function deleteProduct(Request $request, Product $product)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        if(in_array('ROLE_ADMIN', $user->getRoles())){
+            $em->remove($product);
+            $em->flush();
+            return $this->redirectToRoute('shop');
+        }
+
     }
 }
