@@ -9,8 +9,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class WorkAddType extends AbstractType
+class EditWorkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,14 +19,14 @@ class WorkAddType extends AbstractType
             ->add('type', TextType::class, array('label' => 'Darbo tipas'))
             ->add('description', TextType::class, array('label' => 'Aprašymas'))
             ->add('timeNeeded', TextType::class, array('label' => 'Skirtas laikas'))
+            ->add('submit', SubmitType::class, array('label' => 'Atnaujinti'));
         ;
     }
-/*
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Work::class,
         ]);
     }
-*/
 }

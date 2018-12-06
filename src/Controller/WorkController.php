@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Work;
 use App\Form\WorkAddType;
+use App\Form\EditWorkType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 class WorkController extends AbstractController
 {
     /**
-     * @Route("/work/index", name="work")
+     * @Route("/works/index", name="works")
      */
-    public function showWorkMenu(Request $request)
+    public function showWorksMenu(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -29,12 +30,12 @@ class WorkController extends AbstractController
                     ['user' => $user->getId()]
                 );
         }*/
-        return $this->render('work/index.html.twig', [
+        return $this->render('works/index.html.twig', [
             'works' => $works,
         ]);
     }
     /**
-     * @Route("/work/addWork", name="addWork")
+     * @Route("/works/addWork", name="addWork")
      */
     public function addWork(Request $request)
     {
@@ -54,36 +55,55 @@ class WorkController extends AbstractController
             $entityManager->persist($work);
             $entityManager->flush();
 
-            return $this->redirectToRoute('work');
+            return $this->redirectToRoute('works');
         }
-        return $this->render('work/addWork.html.twig', [
+        return $this->render('works/addWork.html.twig', [
             'form' => $form->createView(),
         ]);
     }
     /**
-     * @Route("/work/editWork", name="editWork")
+     * @Route("/works/editWork/{id}", name="editWork")
      */
-    public function editWork(Request $request)
+    public function editWork(Request $request, Work $work)
     {
-        return $this->render('work/editWork.html.twig', [
-            'controller_name' => 'WorkController',
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(EditWorkType::class, $work);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($work);
+            $em->flush();
+
+        return $this->redirectToRoute('works');
+        }
+        return $this->render('works/editWork.html.twig', [
+            'work' => $work,
+            'form' => $form->createView()
         ]);
     }
     /**
-     * @Route("/work/deleteWork", name="deleteWork")
+     * @Route("/works/deleteWork/{id}", name="deleteWork")
      */
-    public function deleteWork(Request $request)
+    public function deleteWork(Request $request, Work $work)
     {
-        return $this->render('work/deleteWork.html.twig', [
-            'controller_name' => 'WorkController',
-        ]);
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        if(in_array('ROLE_ADMIN', $user->getRoles()) ||
+            in_array('ROLE_MECHANIC', $user->getRoles())){
+            $em->remove($work);
+            $em->flush();
+            return $this->redirectToRoute('works');
+        }
+        
     }
     /**
      * @Route("/work/changeTimeNeeded", name="changeTimeNeeded")
      */
     public function changeTimeNeeded(Request $request)
     {
-        return $this->render('work/changeTimeNeeded.html.twig', [
+        return $this->render('works/changeTimeNeeded.html.twig', [
             'controller_name' => 'WorkController',
         ]);
     }
@@ -92,7 +112,7 @@ class WorkController extends AbstractController
      */
     public function confirmCompletion(Request $request)
     {
-        return $this->render('work/confirmCompletion.html.twig', [
+        return $this->render('works/confirmCompletion.html.twig', [
             'controller_name' => 'WorkController',
         ]);
     }
@@ -101,7 +121,7 @@ class WorkController extends AbstractController
      */
     public function timeTable()
     {
-        return $this->render('work/timeTable.html.twig', [
+        return $this->render('works/timeTable.html.twig', [
             'controller_name' => 'WorkController',
         ]);
     }

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<br>
+<br>
+<div class="btn-group">
+{% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
+    <li><a href="{{ path('addWork') }}">Pridėti darbą</a></li>
+    <li><a href="{{ path('changeTimeNeeded') }}">Keisti laiko įvertį</a></li>
+    <li><a href="{{ path('confirmCompletion') }}">Patvirtinti darbo atlikimą</a></li>
+    <li><a href="{{ path('timeTable') }}">Tvarkaraštis</a></li>
+{% endif %}
+</div>
+<table>
+
+    <tr>
+        <td>vizitas</td>
+        <td>Darbo tipas</td>
+        <td>Aprašymas</td>
+        <td>Skirtas laikas, (val.)</td>
+        <td></td>
+    </tr>
+ {% for work in works %}
+            <tr>
+            <th>{{ loop.index }}</th>
+            <td>{{ work.visit}}</td>
+            <td>{{ work.type}}</td>
+            <td>{{ work.description}}</td>
+            <td>{{ work.timeNeeded}}</td>
+            {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+                <td>
+                    <a href="{{ path('editWork', {id: work.id}) }}">
+                        <button type="button">Redaguoti</button>
+                    </a>
+                    <a href="{{ path('deleteWork', {id: work.id}) }}">
+                        <button type="button">Šalinti</button>
+                    </a>
+                </td>
+
+            {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
