@@ -8,6 +8,7 @@ use App\Form\SupplierAddType;
 use App\Form\SupplierEditType;
 use App\Form\VisitEditType;
 use App\Form\VisitType;
+use App\Form\WayBillAddType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -124,6 +125,35 @@ class SuppliersController extends AbstractController
         $waybills = $em->getRepository('App:Waybill')->findAll();
         return $this->render('suppliers/waybills.html.twig', [
             'waybills' => $waybills,
+        ]);
+    }
+
+    /**
+     * @Route("/suppliers/addWayBill", name="addWayBill")
+     */
+    public function addWayBill(Request $request)
+    {
+        $waybill = new WayBill();
+
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(WayBillAddType::class);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $supplier = $em->getRepository('App:Supplier')->findOneByName($form['supplier']->getData());
+            $waybill->setSupplier($supplier);
+            $waybill->setQuantity($form['quantity']->getData());
+            $waybill->setTotalPrice($form['totalPrice']->getData());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($waybill);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('allwaybills');
+        }
+        return $this->render('suppliers/addWayBill.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

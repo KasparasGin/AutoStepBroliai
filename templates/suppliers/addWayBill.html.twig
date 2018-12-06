@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <script>
+        function goBack() {
+            window.history.back()
+        }
+    </script>
+    <center><h2>Naujo važtaraščio pridėjimo forma</h2></center>
+    <br>
+    <div class="container">
+    {{ form_start(form)}}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-success">Pridėti važtaraštį</button>
+        &emsp;&emsp;&emsp;&emsp;&emsp;
+        <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+    {{ form_end(form) }}
+    </div>
+
+{% endblock %}

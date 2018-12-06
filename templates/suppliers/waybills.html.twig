@@ -6,6 +6,7 @@
 
     <center><h2>Važtaraščių sąrašas</h2></center>
     <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+    <a href="{{ path('addWayBill') }}" class="btn btn-info">Pridėti važtaraštį</a></li>
     <br>
     <br>
     <br>
@@ -15,8 +16,7 @@
             <td>Nr.</td>
             <td>Tiekėjas</td>
             <td>Kiekis</td>
-            <td>Suma</td>
-            <td></td>
+            <td>Suma (€)</td>
         </tr>
 
         {% for waybill in waybills %}
