@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductAdd;
+use App\Form\OrderEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,15 +79,7 @@ class ShopController extends AbstractController
             'controller_name' => 'ShopController',
         ]);
     }
-    /**
-     * @Route("/shop/ordereditShop", name="orderedit")
-     */
-    public function showOrderEdit()
-    {
-        return $this->render('shop/ordereditShop.html.twig', [
-            'controller_name' => 'ShopController',
-        ]);
-    }
+
     /**
      * @Route("/shop/orderdeleteShop", name="orderdelete")
      */
@@ -120,6 +113,27 @@ class ShopController extends AbstractController
         }
         return $this->render('shop/orderShop.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/shop/ordereditShop/{id}", name="editOrder")
+     */
+    public function editOrder(Request $request, Product $product)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(OrderEditType::class, $product);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($product);
+            $em->flush();
+
+            return $this->redirectToRoute('shop');
+        }
+        return $this->render('shop/ordereditShop.html.twig', [
+            'product' => $product,
+            'form' => $form->createView()
         ]);
     }
 }

@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello {{ controller_name }}!{% endblock %}
-
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block body %}
 
-    <p>Cia yra užsakytų prekių redagavimo puslapis.  {% if app.user %} Prisijunges vartotojas: {{ app.user.username }} {% endif %}</p>
+    <center><h2>Redaguoti prekę</h2></center>
+    <div class="container">
+        {{ form_start(form)}}
 
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
