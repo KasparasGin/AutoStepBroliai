@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SuppliersController extends AbstractController
 {
+
     /**
      * @Route("/suppliers/index", name="suppliers")
      */
@@ -54,6 +55,7 @@ class SuppliersController extends AbstractController
             $supplier->setCompanyCode($form['company_code']->getData());
             $supplier->setName($form['name']->getData());
             $supplier->setAddress($form['address']->getData());
+            $supplier->setAccNumber($form['accNumber']->getData());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($supplier);

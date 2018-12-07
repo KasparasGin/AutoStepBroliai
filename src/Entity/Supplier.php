@@ -19,7 +19,7 @@ class Supplier
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=9)
      */
     private $company_code;
 
@@ -32,6 +32,11 @@ class Supplier
      * @ORM\Column(type="string", length=255)
      */
     private $address;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $accNumber;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Waybill", mappedBy="supplier")
@@ -80,6 +85,18 @@ class Supplier
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAccNumber(): ?string
+    {
+        return $this->accNumber;
+    }
+
+    public function setAccNumber(string $accNumber): self
+    {
+        $this->accNumber = $accNumber;
 
         return $this;
     }

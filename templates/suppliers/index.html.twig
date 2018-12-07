@@ -7,7 +7,6 @@
 <div class="btn-group">
     {% if is_granted('ROLE_ADMIN')%}
         <a href="{{ path('addSupplier') }}" class="btn btn-info">Pridėti tiekėją</a>
-        <a href="{{ path('paymentsForSuppliers') }}" class="btn btn-info">Apmokėjimai tiėkėjams</a>
     {% endif %}
     {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
         <a href="{{ path('allwaybills') }}" class="btn btn-info">Važtaraščiai</a></li>
@@ -24,8 +23,9 @@
             <td>Įmonės kodas</td>
             <td>Pavadinimas</td>
             <td>Adresas</td>
-            <td></td>
-            {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+            <td>Sąskaitos numeris</td>
+            {% if (is_granted('ROLE_ADMIN')) %}
+                <td></td>
             {% endif %}
         </tr>
 
@@ -35,6 +35,7 @@
                 <td>{{ supplier.companycode }}</td>
                 <td>{{ supplier.name }}</td>
                 <td>{{ supplier.address }}</td>
+                <td>{{ supplier.accNumber }}</td>
 
                 {% if (is_granted('ROLE_ADMIN')) %}
                     <td>
