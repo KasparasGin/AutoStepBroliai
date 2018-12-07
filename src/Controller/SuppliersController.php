@@ -108,12 +108,17 @@ class SuppliersController extends AbstractController
     }
 
     /**
-     * @Route("/suppliers/paymentsForSuppliers", name="paymentsForSuppliers")
+     * @Route("/suppliers/paymentsForSuppliers/{id}", name="paymentsForSuppliers")
      */
-    public function paymentsForSuppliers()
+    public function paymentsForSuppliers($id)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $supplier = $em->getRepository('App:Supplier')->findById($id);
+        $waybills = $em->getRepository('App:WayBill')->findBySupplier($supplier);
         return $this->render('suppliers/paymentsForSuppliers.html.twig', [
-            'controller_name' => 'SuppliersController',
+            'supplier' => $supplier,
+            'waybills' => $waybills,
         ]);
     }
 

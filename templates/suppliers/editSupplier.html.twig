@@ -9,11 +9,13 @@
         }
     </script>
     <center><h2>Redaguoti tiekėją</h2></center>
+    <br>
     <div class="container">
         {{ form_start(form)}}
-        {{ form_widget(form) }}
+        <center>{{ form_widget(form, { 'attr': {'style': 'width: 30%'} }) }}
         <br>
         <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+        </center>
         {{ form_end(form) }}
     </div>
 {% endblock %}

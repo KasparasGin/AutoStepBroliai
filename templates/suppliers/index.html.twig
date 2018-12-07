@@ -4,7 +4,7 @@
 
 {% block body %}
     <br>
-<div class="btn-group">
+    <center><div class="btn-group">
     {% if is_granted('ROLE_ADMIN')%}
         <a href="{{ path('addSupplier') }}" class="btn btn-info">Pridėti tiekėją</a>
     {% endif %}
@@ -12,10 +12,11 @@
         <a href="{{ path('allwaybills') }}" class="btn btn-info">Važtaraščiai</a></li>
         <a href="{{ path('allRequiredParts') }}" class="btn btn-info">Reikiamų detalių sąrašas</a>
     {% endif %}
-</div>
+    </div></center>
     <br>
     <br>
-    <br>
+    <center>
+    <div style="max-width:70%;">
     <table class="table table-striped table-hover table-bordered">
 
         <tr>
@@ -54,4 +55,6 @@
             </tr>
         {% endfor %}
     </table>
+    </div>
+    </center>
 {% endblock %}
