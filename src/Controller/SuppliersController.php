@@ -141,7 +141,7 @@ class SuppliersController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $supplier = $em->getRepository('App:Supplier')->findOneByName($form['supplier']->getData());
+            $supplier = $em->getRepository('App:Supplier')->findOneById($form['supplier']->getData());
             $waybill->setSupplier($supplier);
             $waybill->setQuantity($form['quantity']->getData());
             $waybill->setTotalPrice($form['totalPrice']->getData());
