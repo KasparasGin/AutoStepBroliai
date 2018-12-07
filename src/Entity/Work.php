@@ -43,6 +43,11 @@ class Work
      */
     private $visit;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TimeTable", inversedBy="works")
+     */
+    private $timeTable;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Work
     public function setVisit(?Visit $visit): self
     {
         $this->visit = $visit;
+
+        return $this;
+    }
+
+    public function getTimeTable(): ?TimeTable
+    {
+        return $this->timeTable;
+    }
+
+    public function setTimeTable(?TimeTable $timeTable): self
+    {
+        $this->timeTable = $timeTable;
 
         return $this;
     }

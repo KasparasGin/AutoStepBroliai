@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Work;
+use App\Entity\TimeTable;
 use App\Form\WorkAddType;
 use App\Form\EditWorkType;
 use App\Form\WorkCompletionType;
@@ -143,12 +144,27 @@ class WorkController extends AbstractController
        
     }
      /**
-     * @Route("/work/timeTable", name="timeTable")
+     * @Route("/works/timeTable", name="timeTable")
      */
-    public function timeTable()
+    public function timeTable(Request $request, Work $work)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getUser();
+        $works = $em->getRepository('App:Work')->findAll();
+        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
+            in_array('ROLE_MECHANIC', $user->getRoles()))
+            $works = $em->getRepository('App:Work')->findAll();
+
+        else {
+            $works = $em->getRepository('App:Work')
+                ->findBy(
+                    ['user' => $user->getId()]
+                );
+        }*/
+
         return $this->render('works/timeTable.html.twig', [
-            'controller_name' => 'WorkController',
+            'works' => $works,
         ]);
     }
 }
