@@ -48,7 +48,10 @@
         <li><a href="{{ path('suppliers') }}">Tiekėjų valdymas</a></li>
         {% endif %}
         <li><a href="{{ path('works') }}">Darbų valdymas</a></li>
+        {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
         <li><a href="{{ path('repair') }}">Remontas</a></li>
+        {% endif %}
+
 
     {% else %}
         <li><a href="/login">Prisijungimas</a></li>
