@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+    <p>Čia gali rezirvuoti įrankį</p>
+
+    {{ form_start(form) }}
+
+    <button type="submit">Rezervuoti</button>
+    {{ form_end(form) }}
+{% endblock %}

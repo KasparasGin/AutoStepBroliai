@@ -2,11 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\BrokenPartDescription;
 use App\Entity\Note;
+use App\Entity\OrderPart;
 use App\Entity\RepairAction;
+use App\Entity\Tool;
+use App\Entity\ToolReservation;
 use App\Entity\Visit;
+use App\Form\BrokenPartDescriptionType;
 use App\Form\NoteType;
+use App\Form\OrderPartType;
 use App\Form\RepairActionType;
+use App\Form\ReserveToolType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +39,7 @@ class RepairController extends AbstractController
             'controller_name' => 'RepairController',
         ]);
     }
+
     /**
      * @Route("/repair/createNote", name="createNote")
      */
@@ -56,15 +64,66 @@ class RepairController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/repair/reserveTool", name="reserveTool")
      */
-    public function reserveTool()
+    public function reserveTool(Request $request)
     {
+        $reservation = new ToolReservation();
+        $em = $this->getDoctrine()->getManager();
+        $tools = $em->getRepository('App:Tool')->findAll();
+
+        $form = $this->createForm(ReserveToolType::class, null, array(
+            'tools' => $tools,
+        ));
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $tool = $form['tool']->getData();
+            $toolReservations = $tool->getToolReservations();
+            $reservation->setStartDate($form['startDate']->getData());
+            $reservation->setEndDate($form['endDate']->getData());
+
+            if ($reservation->getStartDate() > $reservation->getEndDate()) {
+                return $this->redirectToRoute('badDate');
+            }
+
+            $isFree = false;
+            $reservationsCount = 0;
+            foreach ($toolReservations as $value) {
+                $reservationsCount++;
+                if ($value->getEndDate() < $reservation->getEndDate() && $value->getEndDate() < $reservation->getStartDate()) {
+                    $isFree = true;
+                } else if ($value->getStartDate() > $reservation->getEndDate()) {
+                    $isFree = true;
+                }
+            }
+            if ($reservationsCount == 0) $isFree = true;
+
+            if (!$isFree) {
+                return $this->redirectToRoute('toolTaken');
+            }
+
+            $reservation->setTool($form['tool']->getData());
+            $reservation->setUser($user);
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($reservation);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('success');
+        }
+
+
         return $this->render('repair/reserveTool.html.twig', [
-            'controller_name' => 'RepairController',
+            'tools' => $tools,
+            'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/repair/addRepairAction", name="addRepairAction")
      */
@@ -90,30 +149,82 @@ class RepairController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/repair/orderPart", name="orderPart")
      */
-    public function orderPart()
+    public function orderPart(Request $request)
     {
+        $action = new OrderPart();
+        $form = $this->createForm(OrderPartType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $action->setTitle($form['title']->getData());
+            $action->setAmount($form['amount']->getData());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($action);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('success');
+        }
         return $this->render('repair/orderPart.html.twig', [
-            'controller_name' => 'RepairController',
+            'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/repair/describePart", name="describePart")
      */
-    public function describePart()
+    public function describePart(Request $request)
     {
+        $action = new BrokenPartDescription();
+
+        $form = $this->createForm(BrokenPartDescriptionType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $action->setDescription($form['description']->getData());
+            $action->setDate($form['date']->getData());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($action);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('success');
+        }
         return $this->render('repair/describePart.html.twig', [
-            'controller_name' => 'RepairController',
+            'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/repair/repairManuals", name="repairManuals")
      */
     public function repairManuals()
     {
-        return $this->render('repair/timeTable.html.twig', [
+        return $this->render('repair/repairManuals.html.twig', [
+            'controller_name' => 'RepairController',
+        ]);
+    }
+
+    /**
+     * @Route("/repair/badDate", name="badDate")
+     */
+    public function badDate()
+    {
+        return $this->render('repair/badDate.html.twig', [
+            'controller_name' => 'RepairController',
+        ]);
+    }
+
+    /**
+     * @Route("/repair/toolTaken", name="toolTaken")
+     */
+    public function toolTaken()
+    {
+        return $this->render('repair/toolTaken.html.twig', [
             'controller_name' => 'RepairController',
         ]);
     }

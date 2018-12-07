@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+    <p>Čia gali aprašyti remonto metu aptiktą sugedusią arba sulūžusią detalę</p>
+
+    {{ form_start(form) }}
+
+    <button type="submit">Siųsti</button>
+    {{ form_end(form) }}
+{% endblock %}
