@@ -3,28 +3,5 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
- {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
-<h2>Tvarkaraštis {% if app.user %} vartotojui: {{ app.user.username }} {% endif %}</h2>
-<br><br>
-<br>
-    <table class="table table-striped table-hover table-bordered">
-
-       <tr>
-        <td>val.</td>
-        <td>Darbo tipas</td>
-        <td>Aprašymas</td>
-        <td>Skirtas laikas, (val.)</td>
-    </tr>
-            {% endif %}
-        </tr>
-
-        {% for work in works %}
-            <tr>
-            <th>{{ loop.index }}</th>
-            <td>{{ work.type}}</td>
-            <td>{{ work.description}}</td>
-            <td>{{ work.timeNeeded}}</td>
-        {% endfor %}
-    </table>
-
+ aa
 {% endblock %}

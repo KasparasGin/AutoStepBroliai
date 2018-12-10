@@ -48,6 +48,11 @@ class Work
      */
     private $timeTable;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $Added;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +126,18 @@ class Work
     public function setTimeTable(?TimeTable $timeTable): self
     {
         $this->timeTable = $timeTable;
+
+        return $this;
+    }
+
+    public function getAdded(): ?bool
+    {
+        return $this->Added;
+    }
+
+    public function setAdded(bool $Added): self
+    {
+        $this->Added = $Added;
 
         return $this;
     }

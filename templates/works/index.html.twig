@@ -15,7 +15,7 @@
 
     <tr>
         <td>#</td>
-        <td>vizitas</td>
+        <td>Auto nr.</td>
         <td>Darbo tipas</td>
         <td>Aprašymas</td>
         <td>Skirtas laikas, (val.)</td>
@@ -26,7 +26,7 @@
  {% for work in works %}
             <tr>
             <th>{{ loop.index }}</th>
-            <td>{{ work.visit}}</td>
+            <td>{{ work.visit.car.registrationPlate }}</td>
             <td>{{ work.type}}</td>
             <td>{{ work.description}}</td>
             <td>{{ work.timeNeeded}}</td>
