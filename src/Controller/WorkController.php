@@ -106,7 +106,8 @@ class WorkController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         if(in_array('ROLE_ADMIN', $user->getRoles()) ||
-            in_array('ROLE_MECHANIC', $user->getRoles())){
+            in_array('ROLE_MECHANIC', $user->getRoles()) &&
+            in_array('1', $work->getCompletion())){
             $em->remove($work);
             $em->flush();
             return $this->redirectToRoute('works');

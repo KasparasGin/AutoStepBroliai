@@ -29,7 +29,6 @@ class ChangeTimeNeededType extends AbstractType
                 'multiple' => False,
                 'expanded' => False,
                 ))
-            ->add('submit', SubmitType::class, array('label' => 'Atnaujinti'));
         ;
     }
 

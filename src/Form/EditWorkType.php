@@ -16,9 +16,17 @@ class EditWorkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', TextType::class, array('label' => 'Darbo tipas'))
+        ->add('type', ChoiceType::class, array(
+            'choices' => array(
+                'Apžiūra' => 'Apžiūra',
+                'Remontas' => 'Remontas',
+                'Diagnostika' => 'Diagnostika',              
+            ),
+            'label' => 'Darbo tipas',
+            'multiple' => False,
+            'expanded' => False,
+            ))
             ->add('description', TextType::class, array('label' => 'Aprašymas'))
-            ->add('submit', SubmitType::class, array('label' => 'Atnaujinti'));
         ;
     }
 

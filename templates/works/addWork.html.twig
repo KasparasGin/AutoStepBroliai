@@ -3,14 +3,21 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-
- <p>Pridėkite darbą:  {% if app.user %} Prisijunges vartotojas: {{ app.user.username }} {% endif %}</p>
-    
-    {{ form_start(form) }}
- {{ form_widget(form) }}
- <br>
-<button type="submit">Pridėti</button>
+<script>
+        function goBack(){
+            window.history.back()
+        }
+    </script>
+ <center><h2>Darbo pridėjimo forma</h2></center>
+    <br>
+    <div class="container">
+   {{ form_start(form)}}
+      <center>{{ form_widget(form, { 'attr': {'style': 'width: 30%'} }) }}
+      <button type="submit" class="btn btn-success">Pridėti darbą</button>
+      &emsp;&emsp;&emsp;&emsp;
+      <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+      </center>
      {{ form_end(form) }}
-    
+     </div>
 
 {% endblock %}

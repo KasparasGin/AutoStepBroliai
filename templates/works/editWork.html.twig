@@ -3,12 +3,20 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-<h2>Redaguoti tiekėją</h2>
+<script>
+        function goBack(){
+            window.history.back()
+        }
+    </script>
+<center><h2>Redaguoti darbą</h2></center>
 <br>
  <div class="container">
     {{ form_start(form)}}
-         {{ form_widget(form) }}
-            <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+        <center>{{ form_widget(form, { 'attr': {'style': 'width: 30%'} }) }}
+           <button type="submit" class="btn btn-success">Pridėti tiekėją</button>
+        &emsp;&emsp;&emsp;&emsp;
+        <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+        </center>
     {{ form_widget(form) }}
 </div>
        
