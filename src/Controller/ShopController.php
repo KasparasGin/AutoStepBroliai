@@ -23,20 +23,12 @@ class ShopController extends AbstractController
 
         $user = $this->getUser();
         $products = $em->getRepository('App:Product')->findAll();
-        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
-            in_array('ROLE_MECHANIC', $user->getRoles()))
-            $suppliers = $em->getRepository('App:Supplier')->findAll();
 
-        else {
-            $suppliers = $em->getRepository('App:Supplier')
-                ->findBy(
-                    ['user' => $user->getId()]
-                );
-        }*/
         return $this->render('shop/index.html.twig', [
             'products' => $products,
         ]);
     }
+
     /**
      * @Route("/shop/index", name="shop")
      */
@@ -56,12 +48,20 @@ class ShopController extends AbstractController
         ]);
     }
     /**
-     * @Route("/shop/orderShop", name="addProduct")
+     * @Route("/shop/orderedShop", name="orderedShop")
      */
     public function showOrder()
     {
-        return $this->render('shop/orderShop.html.twig', [
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getUser();
+        $userid = $user->getId();
+        $oproductid = $em->getRepository('App:Orders')->findBy(array('user' => $user),array());
+        $product = $em->getRepository('App:OrderProduct')->findBy(array('IsInOrder' => $oproductid),array());
+
+        return $this->render('shop/orderedShop.html.twig', [
             'controller_name' => 'ShopController',
+            'products' => $product,
         ]);
     }
     /**
@@ -73,15 +73,7 @@ class ShopController extends AbstractController
             'controller_name' => 'ShopController',
         ]);
     }
-    /**
-     * @Route("/shop/orderedShop", name="ordered")
-     */
-    public function showOrders()
-    {
-        return $this->render('shop/orderedShop.html.twig', [
-            'controller_name' => 'ShopController',
-        ]);
-    }
+
     /**
      * @Route("/shop/orderShop", name="addProduct")
      */
@@ -97,7 +89,7 @@ class ShopController extends AbstractController
             $product->setCode($form['code']->getData());
             $product->setName($form['name']->getData());
             $product->setPrice($form['price']->getData());
-            $product->setOrdered(null);
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
