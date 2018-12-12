@@ -8,6 +8,7 @@ use App\Entity\Orders;
 use App\Form\ProductAdd;
 use App\Form\OrderAdd;
 use App\Form\OrderEditType;
+use App\Form\OrderEdit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -158,6 +159,41 @@ class ShopController extends AbstractController
         $user = $this->getUser();
         if(in_array('ROLE_ADMIN', $user->getRoles())){
             $em->remove($product);
+            $em->flush();
+            return $this->redirectToRoute('shop');
+        }
+
+    }
+    /**
+     * @Route("/shop/ordereditShop/{id}", name="editOrder")
+     */
+    public function editOrder(Request $request, Product $product)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(OrderEdit::class, $product);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($product);
+            $em->flush();
+
+            return $this->redirectToRoute('shop');
+        }
+        return $this->render('shop/ordereditShop.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/shop/orderdelete/{id}", name="deleteOrder")
+     */
+    public function deleteOrder(Request $request, OrderProduct $product)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        if(in_array('ROLE_ADMIN', $user->getRoles())){
+            $orderz = $em->getRepository('App:OrderProduct')->findBy(['id' => $product]);
+            $em->remove($orderz);
             $em->flush();
             return $this->redirectToRoute('shop');
         }
