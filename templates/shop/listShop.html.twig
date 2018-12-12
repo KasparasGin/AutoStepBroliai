@@ -5,9 +5,11 @@
 {% block body %}
 
 
-    <li><a href="{{ path('order') }}">Pridėti prekę</a></li>
 
 
+    {% if (is_granted('ROLE_ADMIN')) %}
+        <li><a href="{{ path('addProduct') }}">Pridėti prekę™</a></li>
+    {% endif %}
     <table class="table table-striped table-hover">
 
         <tr>
@@ -36,6 +38,11 @@
                     </td>
 
                 {% endif %}
+                <td>
+                                       <a href="{{ path('addOrder', {id: product.id}) }}">
+                                                <button type="button" class="btn btn-primary">Pridėti prie užsakymo</button>
+                                            </a>
+                                    </td>
             </tr>
         {% endfor %}
     </table>

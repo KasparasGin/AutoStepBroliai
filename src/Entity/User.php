@@ -62,11 +62,47 @@ class User implements UserInterface
      */
     private $visits;
 
+    /**
+         * @ORM\OneToMany(targetEntity="App\Entity\Orders", mappedBy="user")
+         */
+    private $Orders;
+
     public function __construct()
     {
         $this->roles=array('ROLE_USER');
         $this->cars = new ArrayCollection();
         $this->visits = new ArrayCollection();
+        $this->Orders = new ArrayCollection();
+    }
+
+    /**
+         * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->Orders;
+    }
+    public function addOrder(Order $order): self
+    {
+        if (!$this->Orders->contains($order)) {
+            $this->Orders[] = $order;
+            $order->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+            if ($this->Orders->contains($order)) {
+                    $this->Orders->removeElement($order);
+                    // set the owning side to null (unless already changed)
+                    if ($order->getUser() === $this) {
+                            $order->setUser(null);
+                        }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int

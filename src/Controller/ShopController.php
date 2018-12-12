@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\OrderProduct;
 use App\Entity\Product;
+use App\Entity\Orders;
 use App\Form\ProductAdd;
+use App\Form\OrderAdd;
 use App\Form\OrderEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShopController extends AbstractController
 {
     /**
-     * @Route("/shop/listShop", name="products")
+     * @Route("/shop/index", name="products")
      */
     public function showShopMenu(Request $request)
     {
@@ -30,7 +33,7 @@ class ShopController extends AbstractController
                     ['user' => $user->getId()]
                 );
         }*/
-        return $this->render('shop/listShop.html.twig', [
+        return $this->render('shop/index.html.twig', [
             'products' => $products,
         ]);
     }
@@ -44,16 +47,16 @@ class ShopController extends AbstractController
         ]);
     }
     /**
-     * @Route("/shop/listShop", name="list")
+     * @Route("/shop/index", name="list")
      */
     public function showList()
     {
-        return $this->render('shop/listShop.html.twig', [
+        return $this->render('shop/index.html.twig', [
             'controller_name' => 'ShopController',
         ]);
     }
     /**
-     * @Route("/shop/orderShop", name="order")
+     * @Route("/shop/orderShop", name="addProduct")
      */
     public function showOrder()
     {
@@ -80,9 +83,9 @@ class ShopController extends AbstractController
         ]);
     }
     /**
-     * @Route("/shop/orderShop", name="order")
+     * @Route("/shop/orderShop", name="addProduct")
      */
-    public function orderShop(Request $request)
+    public function addProduct(Request $request)
     {
         $product = new Product();
 
@@ -94,6 +97,7 @@ class ShopController extends AbstractController
             $product->setCode($form['code']->getData());
             $product->setName($form['name']->getData());
             $product->setPrice($form['price']->getData());
+            $product->setOrdered(null);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
@@ -104,6 +108,34 @@ class ShopController extends AbstractController
         return $this->render('shop/orderShop.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/shop/index/{id}", name="addOrder")
+     */
+    public function addOrder(Request $request, Product $product)
+    {
+        $orderproduct = new OrderProduct();
+        $order = new Orders();
+
+        $user = $this->getUser();
+
+        $order->setUser($user);
+
+        $orderproduct->setProductName($product);
+        $orderproduct->setAmount(10);
+        $orderproduct->setIsInOrder($order);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        $entityManager->persist($orderproduct);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('shop');
+
     }
     /**
      * @Route("/shop/ordereditShop/{id}", name="editProduct")
@@ -122,8 +154,7 @@ class ShopController extends AbstractController
             return $this->redirectToRoute('shop');
         }
         return $this->render('shop/ordereditShop.html.twig', [
-            'product' => $product,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
     /**
