@@ -3,17 +3,27 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
+    <script>
+        function goBack() {
+            window.history.back()
+        }
+    </script>
 
     <center><h2>Apmokėti tiekėjui</h2></center>
-    <br><br>
+    <br>
+    <center><button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button></center>
+    <br>
     {% set numberOfWayBills = 0 %}
     {% set totalQuantityOfParts = 0 %}
     {% set total = 0 %}
     {% for waybill in waybills %}
+        {% if waybill.paid == false %}
         {% set numberOfWayBills = numberOfWayBills + 1 %}
         {% set totalQuantityOfParts = totalQuantityOfParts + waybill.quantity %}
         {% set total = total + waybill.totalPrice %}
+        {% endif %}
     {% endfor %}
+    {% if total > 0 %}
     <center>Pavedimo informacija</center>
     <center>
     <div style="max-width:40%;">
@@ -48,7 +58,50 @@
         </tr>
     </table>
     </div>
+        <br>
+        Pasirinkite apmokėjimo būdą
+    <div style="max-width:40%;">
+    <table class="table table-striped table-hover table-bordered">
+        <tr>
+            <td>
+                <center>
+                    <a href="https://www.swedbank.lt/"><img src="https://s16315.pcdn.co/wp-content/uploads/2016/05/swedbank_fb-370x225.png" width="185" height="112"></a>
+                <figcaption> SWEDBANK </figcaption></center>
+            </td>
+            <td>
+                <center>
+                    <a href="https://e.seb.lt/mainib/web.p"><img src="https://www.seb.lt/sites/default/files/seb_logotype_rgb.svg" width="185" height="112"></a>
+                <figcaption> SEB </figcaption></center>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <center>
+                    <a href="https://ib.dnb.lt/"><img src="https://ib.dnb.lv/images/luminor-dnb-logo.png" width="185" height="80"></a>
+                    <figcaption> LUMINOR | DNB </figcaption></center>
+            </td>
+            <td>
+                <center>
+                    <a href="https://netbank.nordea.com/pnb/login.do?ts=LT&language=lt"><img src="https://paraiskos.nordea.lt/images/auth-nordea.svg" width="185" height="112"></a>
+                    <figcaption> LUMINOR | NORDEA </figcaption></center>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <center>
+                    <a href="https://online.sb.lt/ib/site/login"><img src="https://www.bankai.lt/upload/bankai/logotipai/original/2015/07/siauliu-bankas-logo-big-17391.png"></a>
+                    <figcaption> ŠIAULIŲ BANKAS </figcaption></center>
+            </td>
+            <td>
+                <center>
+                    <a href="https://www.citadele.lt/lt/"><img src="https://www.kaunasmarathon.lt/assets/images/logai/citadele_logo_ilgas_pantone.png" width="185" height="100"></a>
+                    <figcaption> CITADELE </figcaption></center>
+            </td>
+        </tr>
+    </table>
+    </div>
     </center>
-
-
+    {% else %}
+        <center>Tiekėjui laukiančių pavedimų nėra!</center>
+    {% endif %}
 {% endblock %}

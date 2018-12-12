@@ -23,18 +23,7 @@ class SuppliersController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $user = $this->getUser();
         $suppliers = $em->getRepository('App:Supplier')->findAll();
-        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
-            in_array('ROLE_MECHANIC', $user->getRoles()))
-            $suppliers = $em->getRepository('App:Supplier')->findAll();
-
-        else {
-            $suppliers = $em->getRepository('App:Supplier')
-                ->findBy(
-                    ['user' => $user->getId()]
-                );
-        }*/
         return $this->render('suppliers/index.html.twig', [
             'suppliers' => $suppliers,
         ]);
@@ -102,9 +91,6 @@ class SuppliersController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('suppliers');
         }
-        /*return $this->render('suppliers/deleteSupplier.html.twig', [
-            'controller_name' => 'SuppliersController',
-        ]);*/
     }
 
     /**
@@ -152,6 +138,7 @@ class SuppliersController extends AbstractController
             $waybill->setSupplier($supplier);
             $waybill->setQuantity($form['quantity']->getData());
             $waybill->setTotalPrice($form['totalPrice']->getData());
+            $waybill->setPaid(false);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($waybill);
