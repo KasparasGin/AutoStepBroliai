@@ -2,18 +2,21 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
  {% block body %}
-
+     <center><div class="btn-group">
          {% if (is_granted('ROLE_ADMIN')) %}
-             <li><a href="{{ path('addProduct') }}">Pridėti prekę</a></li>
+             <a href="{{ path('addProduct') }}" class="btn btn-info">Pridėti prekę</a>
 
          {% endif %}
-     <li><a href="{{ path('list') }}">Prekių sąrašas</a></li>
 
 
-     <li><a href="{{ path('payment') }}">Prekių apmokėjimas</a></li>
-     <li><a href="{{ path('orderedShop') }}">Užsakytos prekės</a></li>
 
-         <table class="table table-striped table-hover">
+     <a href="{{ path('payment') }}" class="btn btn-info">Prekių apmokėjimas</a>
+     <a href="{{ path('orderedShop') }}" class="btn btn-info">Užsakytos prekės</a>
+         </div></center>
+     <br>
+     <center>
+     <div style="max-width:70%;">
+     <table class="table table-striped table-hover ">
 
              <tr>
                      <td>Nr.</td>
@@ -49,4 +52,6 @@
                          </tr>
                  {% endfor %}
          </table>
+     </div>
+     </center>
  {% endblock %}
