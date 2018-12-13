@@ -161,11 +161,26 @@ class WorkController extends AbstractController
      */
     public function timeTable(Request $request)
     {
-        $timeTable = new TimeTable();
         $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
 
+        $works = $em->getRepository('App:Work')->findAll();
+        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
+            in_array('ROLE_MECHANIC', $user->getRoles()))
+            $works = $em->getRepository('App:Work')->findAll();
+
+        else {
+            $works = $em->getRepository('App:Work')
+                ->findBy(
+                    ['user' => $user->getId()]
+                );
+        }*/
         return $this->render('works/timeTable.html.twig', [
             'works' => $works,
         ]);
+    }
+    public function addToTable()
+    {
+        
     }
 }

@@ -82,7 +82,7 @@ class User implements UserInterface
     {
         return $this->Orders;
     }
-    public function addOrder(Order $order): self
+   /* public function addOrder(Order $order): self
     {
         if (!$this->Orders->contains($order)) {
             $this->Orders[] = $order;
@@ -90,8 +90,8 @@ class User implements UserInterface
         }
 
         return $this;
-    }
-
+    }*/
+/*
     public function removeOrder(Order $order): self
     {
             if ($this->Orders->contains($order)) {
@@ -103,7 +103,7 @@ class User implements UserInterface
         }
 
         return $this;
-    }
+    }*/
 
     public function getId(): ?int
     {

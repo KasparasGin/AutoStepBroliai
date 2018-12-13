@@ -3,5 +3,38 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
- aa
+ <br>
+ <center><h2>{% if app.user %} Tvarkaraštis vartotojui: {{ app.user.username }} {% endif %}</h2></center>
+<center>
+<div style="max-width:70%;">
+<table class="table table-striped table-hover table-bordered">
+
+    <tr>
+        <td>Auto nr.</td>
+        <td>Darbo tipas</td>
+        <td>Aprašymas</td>
+        <td>Skirtas laikas, (val.)</td>
+        <td></td>
+    </tr>
+ {% for work in works %}
+ {% if work.added == '0' %}
+            <tr>
+            <td>{{ work.visit.car.registrationPlate }}</td>
+            <td>{{ work.type}}</td>
+            <td>{{ work.description}}</td>
+            <td>{{ work.timeNeeded}}</td>
+            </td>
+            <td>
+            {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
+                    <a href="{{ path('editWork', {id: work.id}) }}">
+                        <button type="button" class="btn btn-secondary">Rinktis darbą</button>
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    </div>
+    </center>
 {% endblock %}
