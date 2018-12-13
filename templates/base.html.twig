@@ -39,18 +39,21 @@
     {% if app.user %}
         <li><a href="/">Pagrindinis puslapis</a></li>
         {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('allUsers') }}">Vartotoju sarasas</a></li>
+            <li><a href="{{ path('allUsers') }}">Vartotojų sąrašas</a></li>
         {% endif %}
 
         <li><a href="{{ path('allVisits') }}">Apsilankymai servise</a></li>
         <li><a href="{{ path('shop') }}">Parduotuvė</a></li>
+
         {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
         <li><a href="{{ path('suppliers') }}">Tiekėjų valdymas</a></li>
         {% endif %}
         <li><a href="{{ path('works') }}">Darbų valdymas</a></li>
         {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_MECHANIC'))%}
         <li><a href="{{ path('repair') }}">Remontas</a></li>
+
         {% endif %}
+        <li><a href="{{ path('contact') }}">Parašykite mums!</a></li>
 
 
     {% else %}

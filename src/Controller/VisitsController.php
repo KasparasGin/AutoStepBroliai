@@ -93,7 +93,7 @@ class VisitsController extends AbstractController
     /**
      * @Route("/visits/edit/{id}", name="editVisit")
      */
-    public function editUser(Request $request, Visit $visit){
+    public function editVisit(Request $request, Visit $visit){
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(VisitEditType::class, $visit);

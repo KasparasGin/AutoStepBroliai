@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+        <div class="container">
+            {{ form_start(form)}}
+                <center>{{ form_widget(form, { 'attr': {'style': 'width: 30%'} }) }}
 
-
-        {{ form(form) }}
-
-
-
+                </center>
+            {{ form_end(form) }}
+        </div>
 {% endblock %}

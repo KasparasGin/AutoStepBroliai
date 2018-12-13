@@ -5,7 +5,7 @@
 {% block body %}
 
 
-    <table>
+    <table class="table table-hover table-sm">
 
 
         <tr>
@@ -16,7 +16,7 @@
             {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_MECHANIC')) %}
                 <td>Vartotojas</td>
             {% endif %}
-            <td>Busena</td>
+            <td>Būsena</td>
         </tr>
 
 
@@ -56,5 +56,8 @@
         {% endfor %}
     </table>
 
-    <p><a href="{{ path('registerVisit') }}">Registruotis apziurai</a></p>
+    <p><a href="{{ path('registerVisit') }}">
+            <button type="button" class="btn btn-lg btn-primary">Registruotis apžiūrai</button>
+        </a></p>
+
 {% endblock %}

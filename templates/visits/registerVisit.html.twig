@@ -3,10 +3,14 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-<p>Cia galit uzsregistruot apsilankymui</p>
+<center><h3>Čia galite užsiregistruoti apsilankymui</h3></center>
 
-    {{ form_start(form) }}
+    <div class="container">
+        {{ form_start(form)}}
+        <center>{{ form_widget(form, { 'attr': {'style': 'width: 30%'} }) }}
+            <button type="submit" class="btn btn-success">Registruotis</button>
+        </center>
+        {{ form_end(form) }}
+    </div>
 
-    <button type="submit">Registruotis</button>
-    {{ form_end(form) }}
 {% endblock %}

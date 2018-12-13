@@ -38,6 +38,8 @@ class UsersController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($user);
             $em->flush();
+
+            return $this->redirectToRoute('allUsers');
         }
         return $this->render('users/editUser.html.twig', [
             'user' => $user,
