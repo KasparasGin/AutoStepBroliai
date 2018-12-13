@@ -3,16 +3,19 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
+    <center>
+<form method="post" style="width:20%">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername" class="sr-only">Username</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <h1 class="h3 mb-3 font-weight-normal">Prisijungimas</h1>
+    <br>
+    <label for="inputUsername" class="sr-only">Vartotojo vardas</label>
+    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Vartotojo vardas" required autofocus>
+    <br>
+    <label for="inputPassword" class="sr-only">Slaptažodis</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Slaptažodis" required>
 
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
@@ -28,12 +31,14 @@
             </label>
         </div>
     #}
-
+    <br>
     <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
+        Prisijungti
     </button>
 
 </form>
 
-    <p><a href="/registration"> Registracija </a></p>
+    <br>
+    <a href="/registration"><button class="btn btn-lg btn-danger">Registruotis</button></a>
+    </center>
 {% endblock %}

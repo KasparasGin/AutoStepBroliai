@@ -3,12 +3,18 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
+    <center>
+    <h1 class="h3 mb-3 font-weight-normal">Registracija</h1>
+        <br><br>
+    <div class="container" style="width:30%">
     {{ form_start(form) }}
     {{ form_row(form.username)}}
     {{ form_row(form.email) }}
     {{ form_row(form.plainPassword.first) }}
     {{ form_row(form.plainPassword.second) }}
 
-    <button type="submit">Register!</button>
+    <button type="submit" class="btn btn-lg btn-primary">Registruotis!</button>
     {{ form_end(form) }}
+    </div>
+    </center>
 {% endblock %}
