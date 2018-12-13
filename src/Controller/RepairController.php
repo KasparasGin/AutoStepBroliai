@@ -47,14 +47,17 @@ class RepairController extends AbstractController
     {
         $note = new Note();
 
-        $user = $this->getUser();
-//        $timeTables = $this->get
-        $form = $this->createForm(NoteType::class);
+        $em = $this->getDoctrine()->getManager();
+        $works = $em->getRepository('App:Work')->findAll();
+
+        $form = $this->createForm(NoteType::class,  null, array(
+            'works' => $works,
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $note->setComment($form['note']->getData());
-
+            $note->setWork($form['work']->getData());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($note);
             $entityManager->flush();
@@ -132,12 +135,18 @@ class RepairController extends AbstractController
     {
         $action = new RepairAction();
 
-        $form = $this->createForm(RepairActionType::class);
+        $em = $this->getDoctrine()->getManager();
+        $works = $em->getRepository('App:Work')->findAll();
+
+        $form = $this->createForm(RepairActionType::class,  null, array(
+            'works' => $works,
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action->setComment($form['comment']->getData());
             $action->setDate($form['date']->getData());
+            $action->setWork($form['work']->getData());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($action);
@@ -181,13 +190,18 @@ class RepairController extends AbstractController
     public function describePart(Request $request)
     {
         $action = new BrokenPartDescription();
+        $em = $this->getDoctrine()->getManager();
+        $works = $em->getRepository('App:Work')->findAll();
 
-        $form = $this->createForm(BrokenPartDescriptionType::class);
+        $form = $this->createForm(BrokenPartDescriptionType::class,  null, array(
+            'works' => $works,
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action->setDescription($form['description']->getData());
             $action->setDate($form['date']->getData());
+            $action->setWork($form['work']->getData());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($action);

@@ -14,7 +14,7 @@ class NoteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $works = $options['works'];
+            $works = $options['works'];
 
         $builder
             ->add('note', TextType::class, array('label' => 'Komentaras'))
@@ -32,6 +32,5 @@ class NoteType extends AbstractType
                 'works' => array(),
             )
         );
-
     }
 }

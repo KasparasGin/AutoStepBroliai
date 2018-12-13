@@ -35,6 +35,8 @@ class RepairAction
      */
     private $work;
 
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +61,18 @@ class RepairAction
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getWork(): ?string
+    {
+        return $this->work;
+    }
+
+    public function setWork(?Work $description): self
+    {
+        $this->work = $description;
 
         return $this;
     }

@@ -26,6 +26,12 @@ class BrokenPartDescription
      */
     private $date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Work")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $work;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +57,18 @@ class BrokenPartDescription
     public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getWork(): ?string
+    {
+        return $this->work;
+    }
+
+    public function setWork(?Work $description): self
+    {
+        $this->work = $description;
 
         return $this;
     }
