@@ -26,7 +26,11 @@
  {% for work in works %}
             <tr>
             <th>{{ loop.index }}</th>
-            <td>{{ work.visit.car.registrationPlate }}</td>
+            <td>{% if (work.visit.car.registrationPlate == null) %} 
+                    null
+                {% else %}
+                {{ work.visit.car.registrationPlate }}
+                {% endif %}</td>
             <td>{{ work.type}}</td>
             <td>{{ work.description}}</td>
             <td>{{ work.timeNeeded}}</td>
