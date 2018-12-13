@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\OrderProduct;
 use App\Entity\Product;
+use App\Entity\Orders;
 use App\Form\ProductAdd;
+use App\Form\OrderAdd;
 use App\Form\OrderEditType;
+use App\Form\OrderEdit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShopController extends AbstractController
 {
     /**
-     * @Route("/shop/listShop", name="products")
+     * @Route("/shop/index", name="products")
      */
     public function showShopMenu(Request $request)
     {
@@ -20,20 +24,12 @@ class ShopController extends AbstractController
 
         $user = $this->getUser();
         $products = $em->getRepository('App:Product')->findAll();
-        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
-            in_array('ROLE_MECHANIC', $user->getRoles()))
-            $suppliers = $em->getRepository('App:Supplier')->findAll();
 
-        else {
-            $suppliers = $em->getRepository('App:Supplier')
-                ->findBy(
-                    ['user' => $user->getId()]
-                );
-        }*/
-        return $this->render('shop/listShop.html.twig', [
+        return $this->render('shop/index.html.twig', [
             'products' => $products,
         ]);
     }
+
     /**
      * @Route("/shop/index", name="shop")
      */
@@ -44,21 +40,29 @@ class ShopController extends AbstractController
         ]);
     }
     /**
-     * @Route("/shop/listShop", name="list")
+     * @Route("/shop/index", name="list")
      */
     public function showList()
     {
-        return $this->render('shop/listShop.html.twig', [
+        return $this->render('shop/index.html.twig', [
             'controller_name' => 'ShopController',
         ]);
     }
     /**
-     * @Route("/shop/orderShop", name="order")
+     * @Route("/shop/orderedShop", name="orderedShop")
      */
     public function showOrder()
     {
-        return $this->render('shop/orderShop.html.twig', [
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getUser();
+        $userid = $user->getId();
+        $oproductid = $em->getRepository('App:Orders')->findBy(array('user' => $user),array());
+        $product = $em->getRepository('App:OrderProduct')->findBy(array('IsInOrder' => $oproductid),array());
+
+        return $this->render('shop/orderedShop.html.twig', [
             'controller_name' => 'ShopController',
+            'products' => $product,
         ]);
     }
     /**
@@ -70,19 +74,11 @@ class ShopController extends AbstractController
             'controller_name' => 'ShopController',
         ]);
     }
+
     /**
-     * @Route("/shop/orderedShop", name="ordered")
+     * @Route("/shop/orderShop", name="addProduct")
      */
-    public function showOrders()
-    {
-        return $this->render('shop/orderedShop.html.twig', [
-            'controller_name' => 'ShopController',
-        ]);
-    }
-    /**
-     * @Route("/shop/orderShop", name="order")
-     */
-    public function orderShop(Request $request)
+    public function addProduct(Request $request)
     {
         $product = new Product();
 
@@ -95,6 +91,7 @@ class ShopController extends AbstractController
             $product->setName($form['name']->getData());
             $product->setPrice($form['price']->getData());
 
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
@@ -104,6 +101,34 @@ class ShopController extends AbstractController
         return $this->render('shop/orderShop.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/shop/index/{id}", name="addOrder")
+     */
+    public function addOrder(Request $request, Product $product)
+    {
+        $orderproduct = new OrderProduct();
+        $order = new Orders();
+
+        $user = $this->getUser();
+
+        $order->setUser($user);
+
+        $orderproduct->setProductName($product);
+        $orderproduct->setAmount(10);
+        $orderproduct->setIsInOrder($order);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        $entityManager->persist($orderproduct);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('shop');
+
     }
     /**
      * @Route("/shop/ordereditShop/{id}", name="editProduct")
@@ -122,8 +147,7 @@ class ShopController extends AbstractController
             return $this->redirectToRoute('shop');
         }
         return $this->render('shop/ordereditShop.html.twig', [
-            'product' => $product,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
     /**
@@ -135,6 +159,41 @@ class ShopController extends AbstractController
         $user = $this->getUser();
         if(in_array('ROLE_ADMIN', $user->getRoles())){
             $em->remove($product);
+            $em->flush();
+            return $this->redirectToRoute('shop');
+        }
+
+    }
+    /**
+     * @Route("/shop/ordereditShop/{id}", name="editOrder")
+     */
+    public function editOrder(Request $request, Product $product)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(OrderEdit::class, $product);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($product);
+            $em->flush();
+
+            return $this->redirectToRoute('shop');
+        }
+        return $this->render('shop/ordereditShop.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/shop/orderdelete/{id}", name="deleteOrder")
+     */
+    public function deleteOrder(Request $request, OrderProduct $product)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        if(in_array('ROLE_ADMIN', $user->getRoles())){
+            $orderz = $em->getRepository('App:OrderProduct')->findBy(['id' => $product]);
+            $em->remove($orderz);
             $em->flush();
             return $this->redirectToRoute('shop');
         }

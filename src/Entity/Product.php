@@ -34,6 +34,11 @@ class Product
     private $code;
 
 
+    public function __construct()
+    {
+        $this->Ordered = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,4 +79,5 @@ class Product
 
         return $this;
     }
+
 }

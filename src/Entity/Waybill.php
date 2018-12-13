@@ -32,6 +32,11 @@ class Waybill
      */
     private $totalPrice;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $paid;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Waybill
     public function setTotalPrice(float $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getPaid(): ?bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): self
+    {
+        $this->paid = $paid;
 
         return $this;
     }

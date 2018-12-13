@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Work;
 use App\Entity\TimeTable;
+use App\Entity\User;
+use App\Entity\Car;
+use App\Entity\Visit;
 use App\Form\WorkAddType;
 use App\Form\EditWorkType;
 use App\Form\WorkCompletionType;
@@ -43,16 +46,24 @@ class WorkController extends AbstractController
     public function addWork(Request $request)
     {
         $work = new Work();
+        $em = $this->getDoctrine()->getManager();
+        $visits = $em->getRepository('App:Visit')->findAll();
 
-        $form = $this->createForm(WorkAddType::class);
+        $form = $this->createForm(WorkAddType::class, null, array(
+            'visits' => $visits,
+        ));
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $visit = $form['visit']->getData();
+
             $work->setType($form['type']->getData());
             $work->setDescription($form['description']->getData());
             $work->setTimeNeeded($form['timeNeeded']->getData());
             $work->setCompletion(0);
+            $work->setAdded(0);
+            $work->setVisit($form['visit']->getData());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($work);
@@ -61,6 +72,7 @@ class WorkController extends AbstractController
             return $this->redirectToRoute('works');
         }
         return $this->render('works/addWork.html.twig', [
+            'visits' => $visits,
             'form' => $form->createView(),
         ]);
     }
@@ -94,7 +106,8 @@ class WorkController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         if(in_array('ROLE_ADMIN', $user->getRoles()) ||
-            in_array('ROLE_MECHANIC', $user->getRoles())){
+            in_array('ROLE_MECHANIC', $user->getRoles()) &&
+            in_array('1', $work->getCompletion())){
             $em->remove($work);
             $em->flush();
             return $this->redirectToRoute('works');
@@ -146,22 +159,10 @@ class WorkController extends AbstractController
      /**
      * @Route("/works/timeTable", name="timeTable")
      */
-    public function timeTable(Request $request, Work $work)
+    public function timeTable(Request $request)
     {
+        $timeTable = new TimeTable();
         $em = $this->getDoctrine()->getManager();
-
-        $user = $this->getUser();
-        $works = $em->getRepository('App:Work')->findAll();
-        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
-            in_array('ROLE_MECHANIC', $user->getRoles()))
-            $works = $em->getRepository('App:Work')->findAll();
-
-        else {
-            $works = $em->getRepository('App:Work')
-                ->findBy(
-                    ['user' => $user->getId()]
-                );
-        }*/
 
         return $this->render('works/timeTable.html.twig', [
             'works' => $works,

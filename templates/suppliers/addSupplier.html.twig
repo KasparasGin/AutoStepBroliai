@@ -5,7 +5,7 @@
 
 {% block body %}
     <script>
-        function goBack() {
+        function goBack(){
             window.history.back()
         }
     </script>
@@ -13,10 +13,11 @@
     <br>
     <div class="container">
     {{ form_start(form)}}
-        {{ form_widget(form) }}
+        <center>{{ form_widget(form, { 'attr': {'style': 'width: 30%'} }) }}
         <button type="submit" class="btn btn-success">Pridėti tiekėją</button>
-        &emsp;&emsp;&emsp;&emsp;&emsp;
+        &emsp;&emsp;&emsp;&emsp;
         <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
+        </center>
     {{ form_end(form) }}
     </div>
 

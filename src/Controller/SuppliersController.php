@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SuppliersController extends AbstractController
 {
+
     /**
      * @Route("/suppliers/index", name="suppliers")
      */
@@ -22,18 +23,7 @@ class SuppliersController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $user = $this->getUser();
         $suppliers = $em->getRepository('App:Supplier')->findAll();
-        /*if(in_array('ROLE_ADMIN', $user->getRoles()) ||
-            in_array('ROLE_MECHANIC', $user->getRoles()))
-            $suppliers = $em->getRepository('App:Supplier')->findAll();
-
-        else {
-            $suppliers = $em->getRepository('App:Supplier')
-                ->findBy(
-                    ['user' => $user->getId()]
-                );
-        }*/
         return $this->render('suppliers/index.html.twig', [
             'suppliers' => $suppliers,
         ]);
@@ -54,6 +44,7 @@ class SuppliersController extends AbstractController
             $supplier->setCompanyCode($form['company_code']->getData());
             $supplier->setName($form['name']->getData());
             $supplier->setAddress($form['address']->getData());
+            $supplier->setAccNumber($form['accNumber']->getData());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($supplier);
@@ -100,18 +91,20 @@ class SuppliersController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('suppliers');
         }
-        /*return $this->render('suppliers/deleteSupplier.html.twig', [
-            'controller_name' => 'SuppliersController',
-        ]);*/
     }
 
     /**
-     * @Route("/suppliers/paymentsForSuppliers", name="paymentsForSuppliers")
+     * @Route("/suppliers/paymentsForSuppliers/{id}", name="paymentsForSuppliers")
      */
-    public function paymentsForSuppliers()
+    public function paymentsForSuppliers($id)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $supplier = $em->getRepository('App:Supplier')->findById($id);
+        $waybills = $em->getRepository('App:WayBill')->findBySupplier($supplier);
         return $this->render('suppliers/paymentsForSuppliers.html.twig', [
-            'controller_name' => 'SuppliersController',
+            'supplier' => $supplier,
+            'waybills' => $waybills,
         ]);
     }
 
@@ -141,10 +134,11 @@ class SuppliersController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $supplier = $em->getRepository('App:Supplier')->findOneByName($form['supplier']->getData());
+            $supplier = $em->getRepository('App:Supplier')->findOneById($form['supplier']->getData());
             $waybill->setSupplier($supplier);
             $waybill->setQuantity($form['quantity']->getData());
             $waybill->setTotalPrice($form['totalPrice']->getData());
+            $waybill->setPaid(false);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($waybill);

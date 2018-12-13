@@ -4,12 +4,14 @@
 
 {% block body %}
 
-    <center><h2>Važtaraščių sąrašas</h2></center>
+    <center><h2>Važtaraščių sąrašas</h2>
+        <br>
     <button onclick="goBack()" class="btn btn-warning">Grįžti atgal</button>
-    <a href="{{ path('addWayBill') }}" class="btn btn-info">Pridėti važtaraštį</a></li>
+    <a href="{{ path('addWayBill') }}" class="btn btn-primary">Pridėti važtaraštį</a></li>
     <br>
     <br>
     <br>
+    <div style="max-width:50%;">
     <table class="table table-striped table-hover table-bordered">
 
         <tr>
@@ -29,6 +31,8 @@
             </tr>
         {% endfor %}
     </table>
+    </div>
+    </center>
     <script>
         function goBack() {
             window.history.back()
