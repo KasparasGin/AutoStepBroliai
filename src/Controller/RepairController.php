@@ -47,6 +47,8 @@ class RepairController extends AbstractController
     {
         $note = new Note();
 
+        $user = $this->getUser();
+//        $timeTables = $this->get
         $form = $this->createForm(NoteType::class);
         $form->handleRequest($request);
 
@@ -90,14 +92,13 @@ class RepairController extends AbstractController
                 return $this->redirectToRoute('badDate');
             }
 
-            $isFree = false;
+            $isFree = true;
             $reservationsCount = 0;
             foreach ($toolReservations as $value) {
                 $reservationsCount++;
-                if ($value->getEndDate() < $reservation->getEndDate() && $value->getEndDate() < $reservation->getStartDate()) {
-                    $isFree = true;
-                } else if ($value->getStartDate() > $reservation->getEndDate()) {
-                    $isFree = true;
+                if (!($reservation->getEndDate() < $value->getStartDate() || $reservation->getStartDate() > $value->getEndDate())) {
+                    $isFree = false;
+                    break;
                 }
             }
             if ($reservationsCount == 0) $isFree = true;
